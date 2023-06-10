@@ -40,9 +40,7 @@ function winGame() {
 }
 
 function updateGame(event) {
-    // var box = parseInt(event.target.closest('.grid-item').id)
   var box = Array.from(gridItems).indexOf(event.target);
-  console.log(box)
   if (gameBoard[box] === '') {
     gameBoard[box] = currentPlayer.token;
     event.target.textContent = currentPlayer.token;
@@ -50,14 +48,8 @@ function updateGame(event) {
 }
 
 function switchTurn() {
-  console.log({
-    currentPlayer,
-    player1,
-    player2
-  })
   player1.isTurn = !player1.isTurn;
   player2.isTurn = !player2.isTurn;
-
   currentPlayer = player1.isTurn ? player2 : player1
 }
 
