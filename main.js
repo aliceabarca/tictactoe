@@ -5,36 +5,28 @@ var playersTurnHeading = document.querySelector('.players-turn');
 var playerOneWinCount = document.querySelector('.player-1-container .win-count');
 var playerTwoWinCount = document.querySelector('.player-2-container .win-count');
 var ticTacToeGrid = document.querySelector('.tic-tac-toe-grid');
+
+
+// var emojis = ['🥸', '🤖']
+
+var player1 = createPlayer('🥸', 'player 1', 0);
+var player2 = createPlayer('🤖', 'player 2', 0);
+var players = [player1, player2];
 var currentPlayer;
-
-var emojis = ['🥸', '🤖']
-
+var gameBoard = ['', '', '', '', '', '', '', ''];
 
 ticTacToeGrid.addEventListener('click', checkBox);
 window.addEventListener('load', displayTurn)
 
-function createPlayer(player, token, id) {
-  return {
-    player: player,
-    token: token,
-    id: id,
-    win: false
-  }
-}
-
-function getRandomEmoji() {
-  var randomIndex = Math.floor(Math.random() * emojis.length);
-  return emojis[randomIndex];
-}
-
-function displayTurn() {
-  for (var i = 0; i < emojis.length; i++) {
-    playersTurnHeading.innerText = `It's ${[getRandomEmoji()]}'s turn`
-  }
-}
 
 function checkBox(event) {
-  console.log(event.target)
+  var target = event.target.id
+  if (target) {
+    currentPlayer = (currentPlayer === player1) ? player2 : player1;
+    playersTurnHeading.innerText = `It's ${currentPlayer.token}'s turn.`;
+  }
+  console.log(currentPlayer.token)
+  // console.log(target === player1.token)
 }
 
 function winGame() { 
@@ -49,4 +41,43 @@ function winGame() {
     [1, 5, 9]
   ];
   return winCombo;
+}
+
+function updateGame() {
+  
+}
+
+function switchTurn() {
+  // if (player1.isTurn === false) {
+  //   // player1.isTurn = true;
+  //   displayTurn()
+  //   player2.isTurn = true;
+  // }
+  player1.isTurn = !player1.isTurn;
+  player2.isTurn = !player2.isTurn;
+}
+
+function displayTurn() {
+  // switchTurn()
+  if (player1.isTurn === false) {
+    playersTurnHeading.innerText = `It's ${player1.token}'s turn.`;
+  } else {
+    playersTurnHeading.innerText = `It's ${player2.token}'s turn.`
+  }
+}
+
+
+function getRandomPlayer() {
+  var randomIndex = Math.floor(Math.random() * players.length);
+  return players[randomIndex];
+}
+
+function createPlayer(token, id, wins) {
+  return {
+    token: token,
+    id: id,
+    wins: wins,
+    isTurn: false,
+    boxesTaken: []
+  }
 }
