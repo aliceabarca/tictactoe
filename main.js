@@ -5,19 +5,17 @@ var playersTurnHeading = document.querySelector('.players-turn');
 var playerOneWinCount = document.querySelector('.player-1-container .win-count');
 var playerTwoWinCount = document.querySelector('.player-2-container .win-count');
 var ticTacToeGrid = document.querySelector('.tic-tac-toe-grid');
-
-
-// var emojis = ['🥸', '🤖']
+var row = document.querySelectorAll('.row');
 
 var player1 = createPlayer('🥸', 'player 1', 0);
 var player2 = createPlayer('🤖', 'player 2', 0);
 var players = [player1, player2];
 var currentPlayer;
-var gameBoard = ['', '', '', '', '', '', '', ''];
+var gameBoard = ['', '', '', '', '', '', '', '', ''];
 
 ticTacToeGrid.addEventListener('click', checkBox);
+ticTacToeGrid.addEventListener('click', updateGame)
 window.addEventListener('load', displayTurn)
-
 
 function checkBox(event) {
   var target = event.target.id
@@ -25,8 +23,6 @@ function checkBox(event) {
     currentPlayer = (currentPlayer === player1) ? player2 : player1;
     playersTurnHeading.innerText = `It's ${currentPlayer.token}'s turn.`;
   }
-  console.log(currentPlayer.token)
-  // console.log(target === player1.token)
 }
 
 function winGame() { 
@@ -43,29 +39,27 @@ function winGame() {
   return winCombo;
 }
 
-function updateGame() {
-  
+function updateGame(event) {
+  var box = Array.from(gridItems).indexOf(event.target);
+  console.log(box)
+  if (gameBoard[box] === '') {
+    gameBoard[box] = currentPlayer.token;
+    event.target.textContent = currentPlayer.token;
+  }
 }
 
 function switchTurn() {
-  // if (player1.isTurn === false) {
-  //   // player1.isTurn = true;
-  //   displayTurn()
-  //   player2.isTurn = true;
-  // }
   player1.isTurn = !player1.isTurn;
   player2.isTurn = !player2.isTurn;
 }
 
 function displayTurn() {
-  // switchTurn()
   if (player1.isTurn === false) {
     playersTurnHeading.innerText = `It's ${player1.token}'s turn.`;
   } else {
     playersTurnHeading.innerText = `It's ${player2.token}'s turn.`
   }
 }
-
 
 function getRandomPlayer() {
   var randomIndex = Math.floor(Math.random() * players.length);
