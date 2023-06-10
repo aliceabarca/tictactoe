@@ -14,23 +14,12 @@ var currentPlayer;
 var gameBoard = ['', '', '', '', '', '', '', '', ''];
 
 ticTacToeGrid.addEventListener('click', checkBox);
-ticTacToeGrid.addEventListener('click', updateGame)
-window.addEventListener('load', startGame)
+ticTacToeGrid.addEventListener('click', updateGame);
+window.addEventListener('load', startGame);
 
 function checkBox(event) {
   var target = event.target.id
-  console.log(event.target.id)
-  console.log(gameBoard[target])
-  // console.log(currentPlayer)
-  if (target && !gameBoard[target] ) {
-    // conditional ? true : false
-    // currentPlayer.isTurn = false
-    // if (currentPlayer === player1) {
-    //   // player1.isTurn = false
-    // }
-    // currentPlayer = (currentPlayer === player1) ? player2 : player1;
-    // currentPlayer.isTurn = true
-    // playersTurnHeading.innerText = `It's ${currentPlayer.token}'s turn.`;
+  if (target && !gameBoard[target]) {
     switchTurn();
     displayTurn();
   }
