@@ -2,8 +2,8 @@ var playerOneContainer = document.querySelector('.player-1-container');
 var playerTwoContainer = document.querySelector('.player-2-container');
 var gridItems = document.querySelectorAll('.grid-item');
 var playersTurnHeading = document.querySelector('.players-turn');
-var playerOneWinCount = document.querySelector('.player-1-container .win-count');
-var playerTwoWinCount = document.querySelector('.player-2-container .win-count');
+var playerOneWinCount = document.querySelector('#player-one-win-count');
+var playerTwoWinCount = document.querySelector(`#player-two-win-count`);
 var ticTacToeGrid = document.querySelector('.tic-tac-toe-grid');
 var row = document.querySelectorAll('.row');
 
@@ -114,16 +114,20 @@ function updateGame(event) {
 // is it a win if not keep playing
 // win or draw restart game with the oppisite player to start
 function incrementWins(player) {
-  if (player1) {
-  playerOneWinCount.innerText = `${player.wins++} wins`
-  } else if (player2) {
-  playerTwoWinCount.innerText = `${player.wins++} wins`
+  console.log(player)
+  if (player === player1) {
+    playerOneWinCount.innerText = `${player.wins} wins`
+  } else if (player === player2) {
+  playerTwoWinCount.innerText = `${player.wins} wins`
   }
 }
 
 
 function winGame(player) { 
   console.log(gameBoard)
+  // console.log(currentPlaye)
+  // currentPlayer = player.isTurn
+  console.log(currentPlayer)
   for (var i = 0; i < winCombo.length; i++) {
     var matchingCount = 0;
     for (var j = 0; j < winCombo[i].length; j++) {
@@ -135,9 +139,9 @@ function winGame(player) {
       playersTurnHeading.innerText = `${currentPlayer.token} won!`
       player.wins++
       console.log(player.wins)
-      // incrementWins();
+      incrementWins(player);
       restartGame();
-      return;
+      return player
     }
   }
   if (player1.boxesTaken.length + player2.boxesTaken.length === 9) {
@@ -156,7 +160,6 @@ function winGame(player) {
 
 
 function restartGame() {
-  // console.log(losingPlayer)
   setTimeout(function() {
     // if (losingPlayer === player1) {
     //   currentPlayer = player2;
