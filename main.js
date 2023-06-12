@@ -10,10 +10,9 @@ var row = document.querySelectorAll('.row');
 var player1 = createPlayer('🥸', 'player 1', 0);
 var player2 = createPlayer('🤖', 'player 2', 0);
 var players = [player1, player2];
-var currentPlayer;
+var currentPlayer = player1 || player2
 var gameBoard = ['', '', '', '', '', '', '', '', ''];
 var click = true;
-// boxesTakes = [0, 1, 3, 2]
 var winCombo = [
   [0, 1, 2],
   [3, 4, 5],
@@ -26,10 +25,13 @@ var winCombo = [
 ];
 
 ticTacToeGrid.addEventListener('click', function(event) {
-  // updateGame();
+  // switchTurn(event);
+  // updateGame(event);
   displayTurn(event);
   // checkBox(event);
-  // switchTurn();
+  // checkWin()
+  // winGame()
+  // checkBox(event);
 });
 ticTacToeGrid.addEventListener('click', updateGame);
 ticTacToeGrid.addEventListener('click', checkBox);
@@ -63,7 +65,7 @@ function displayTurn(event) {
     switchTurn();
   } else if (player2.isTurn) {
     playersTurnHeading.innerText = `It's ${player2.token}'s turn.`
-    switchTurn()
+    switchTurn();
   }
 }
 
@@ -72,6 +74,7 @@ function checkBox(event) {
     if (player1.isTurn === true) {
       gameBoard.splice(parseInt(target), 1, player1.token);
       player1.boxesTaken.push(parseInt(target));
+      checkWin();
     } else if (player2.isTurn === true) {
       gameBoard.splice(parseInt(target), 1, player2.token);
       player2.boxesTaken.push(parseInt(target));
@@ -81,12 +84,14 @@ function checkBox(event) {
   }
   // console.log(currentPlayer)
   // if its a winner restart game otherwise check for a draw else if continue with the game
-
+// console.log('ja', currentPlayer)
 function checkWin() {
   if (player1.isTurn) {
     winGame(player1)
+    // incrementWins(player);
   } else if (player2.isTurn) {
     winGame(player2)
+    // incrementWins(player);
    }
 }
 
@@ -96,6 +101,11 @@ function updateGame(event) {
     gameBoard[box] = currentPlayer.token;
     event.target.textContent = currentPlayer.token;
   }
+  // restartGame()
+  // if (winGame()) {
+  //   restartGame();
+  //   return;
+  // }
 }
 
 
@@ -103,45 +113,64 @@ function updateGame(event) {
 // is it a draw if not keep playing
 // is it a win if not keep playing
 // win or draw restart game with the oppisite player to start
+function incrementWins(player) {
+  if (player1) {
+  playerOneWinCount.innerText = `${player.wins++} wins`
+  } else if (player2) {
+  playerTwoWinCount.innerText = `${player.wins++} wins`
+  }
+}
+
 
 function winGame(player) { 
-  console.log(currentPlayer)
+  console.log(gameBoard)
   for (var i = 0; i < winCombo.length; i++) {
     var matchingCount = 0;
     for (var j = 0; j < winCombo[i].length; j++) {
       if (player.boxesTaken.includes(winCombo[i][j])) {
-        console.log('hello', currentPlayer)
         matchingCount++
       }
     }
-    console.log(currentPlayer.token)
     if (matchingCount === 3) {
       playersTurnHeading.innerText = `${currentPlayer.token} won!`
-      // restartGame();
+      player.wins++
+      console.log(player.wins)
+      // incrementWins();
+      restartGame();
       return;
     }
   }
   if (player1.boxesTaken.length + player2.boxesTaken.length === 9) {
     playersTurnHeading.innerText = `It's a draw!`;
-    // restartGame();
-    return;
+    player.wins++
+    restartGame();
+    // updateGame();
+    // setTimeout(function() {
+    //   restartGame()
+    // }, 8000);
+    // return;
   }
 }
 
 
 
 
-function restartGame(losingPlayer) {
-  console.log(losingPlayer)
-  gameBoard = ['', '', '', '', '', '', '', '', ''];
-  player1.boxesTaken = [];
-  player2.boxesTaken = [];
-  if (losingPlayer === player1) {
-    currentPlayer = player2;
-  } else if (losingPlayer === player2) {
-    currentPlayer = player1;
-  }
-  // displayTurn();
+function restartGame() {
+  // console.log(losingPlayer)
+  setTimeout(function() {
+    // if (losingPlayer === player1) {
+    //   currentPlayer = player2;
+    // } else if (losingPlayer === player2) {
+    //   currentPlayer = player1;
+    // }
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    player1.boxesTaken = [];
+    player2.boxesTaken = [];
+    for (var i = 0; i < gridItems.length; i++) {
+      gridItems[i].textContent = '';
+    }
+    displayTurn();
+}, 4000);
 }
 
 function createPlayer(token, id, wins) {
