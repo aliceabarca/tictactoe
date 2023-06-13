@@ -10,7 +10,7 @@ var row = document.querySelectorAll('.row');
 var player1 = createPlayer('🥸', 'player 1', 0);
 var player2 = createPlayer('🤖', 'player 2', 0);
 var players = [player1, player2];
-var currentPlayer = player1 || player2
+var currentPlayer = player1
 var gameBoard = ['', '', '', '', '', '', '', '', ''];
 var click = true;
 var winCombo = [
@@ -24,25 +24,19 @@ var winCombo = [
   [2, 4, 6]
 ];
 
-ticTacToeGrid.addEventListener('click', function(event) {
-  // switchTurn(event);
-  // updateGame(event);
+ticTacToeGrid.addEventListener('click', function(event, box) {
+  // if (gameBoard === '') {
+  //   switchTurn()
+  //   updateGame
+  // }
   displayTurn(event);
-  // checkBox(event);
-  // checkWin()
-  // winGame()
-  // checkBox(event);
 });
 ticTacToeGrid.addEventListener('click', updateGame);
 ticTacToeGrid.addEventListener('click', checkBox);
 window.addEventListener('load', startGame);
 
 function startGame() {
-  // player1.isTurn = true;
-  // currentPlayer = player1;
   displayTurn();
-  // checkBox();
-  // switchTurn();
 }
 
 function switchTurn(event) {
@@ -79,55 +73,40 @@ function checkBox(event) {
       gameBoard.splice(parseInt(target), 1, player2.token);
       player2.boxesTaken.push(parseInt(target));
       checkWin();
-      // displayTurn();
     }
   }
-  // console.log(currentPlayer)
-  // if its a winner restart game otherwise check for a draw else if continue with the game
-// console.log('ja', currentPlayer)
+
 function checkWin() {
   if (player1.isTurn) {
     winGame(player1)
-    // incrementWins(player);
   } else if (player2.isTurn) {
     winGame(player2)
-    // incrementWins(player);
    }
 }
+
+/// make function to check if its empty and if its a valid move then updateGame, update the data model then switch player.
+// move line 88 to event listener only update the game if its a valid move only swith player if its a valid move gameBoard[box] === ''
+
 
 function updateGame(event) {
   var box = Array.from(gridItems).indexOf(event.target);
   if (gameBoard[box] === '') {
     gameBoard[box] = currentPlayer.token;
     event.target.textContent = currentPlayer.token;
+    return true;
   }
-  // restartGame()
-  // if (winGame()) {
-  //   restartGame();
-  //   return;
-  // }
 }
 
-
-// create function that checks, win or draw, or none of the above.
-// is it a draw if not keep playing
-// is it a win if not keep playing
-// win or draw restart game with the oppisite player to start
 function incrementWins(player) {
   console.log(player)
   if (player === player1) {
-    playerOneWinCount.innerText = `${player.wins} wins`
+    playerOneWinCount.innerText = `${player.wins} Wins`
   } else if (player === player2) {
-  playerTwoWinCount.innerText = `${player.wins} wins`
+  playerTwoWinCount.innerText = `${player.wins} Wins`
   }
 }
 
-
 function winGame(player) { 
-  console.log(gameBoard)
-  // console.log(currentPlaye)
-  // currentPlayer = player.isTurn
-  console.log(currentPlayer)
   for (var i = 0; i < winCombo.length; i++) {
     var matchingCount = 0;
     for (var j = 0; j < winCombo[i].length; j++) {
@@ -138,7 +117,6 @@ function winGame(player) {
     if (matchingCount === 3) {
       playersTurnHeading.innerText = `${currentPlayer.token} won!`
       player.wins++
-      console.log(player.wins)
       incrementWins(player);
       restartGame();
       return player
@@ -146,26 +124,13 @@ function winGame(player) {
   }
   if (player1.boxesTaken.length + player2.boxesTaken.length === 9) {
     playersTurnHeading.innerText = `It's a draw!`;
-    player.wins++
     restartGame();
-    // updateGame();
-    // setTimeout(function() {
-    //   restartGame()
-    // }, 8000);
-    // return;
   }
 }
 
-
-
-
 function restartGame() {
   setTimeout(function() {
-    // if (losingPlayer === player1) {
-    //   currentPlayer = player2;
-    // } else if (losingPlayer === player2) {
-    //   currentPlayer = player1;
-    // }
+    currentPlayer = switchTurn()
     gameBoard = ['', '', '', '', '', '', '', '', ''];
     player1.boxesTaken = [];
     player2.boxesTaken = [];
@@ -173,7 +138,7 @@ function restartGame() {
       gridItems[i].textContent = '';
     }
     displayTurn();
-}, 4000);
+  }, 2000);
 }
 
 function createPlayer(token, id, wins) {
@@ -185,3 +150,30 @@ function createPlayer(token, id, wins) {
     boxesTaken: []
   }
 }
+
+// function winGame(player) {
+//   for (var i = 0; i < winCombo.length; i++) {
+//     if (winningCombos(player, winCombo[i])) {
+//       playersTurnHeading.innerText = `${currentPlayer.token} won!`
+//       player.wins++;
+//       incrementWins(player);
+//       restartGame();
+//       return player;
+//     }
+//   }
+//   if (player1.boxesTaken.length + player2.boxesTaken.length === 9) {
+//     playersTurnHeading.innerText = `It's a draw!`;
+//     restartGame();
+//     return;
+//   }
+// }
+
+// function winningCombos(player, combo) {
+//   // var matchingCount = 0;
+//   for (var j = 0; j < combo.length; i++) {
+//     if (!player.boxesTaken.includes(combo[j])) {
+//       return false;
+//     }
+//   }
+//   return true
+// }
