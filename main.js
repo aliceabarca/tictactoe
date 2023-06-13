@@ -1,18 +1,13 @@
-var playerOneContainer = document.querySelector('.player-1-container');
-var playerTwoContainer = document.querySelector('.player-2-container');
 var gridItems = document.querySelectorAll('.grid-item');
 var playersTurnHeading = document.querySelector('.players-turn');
 var playerOneWinCount = document.querySelector('#player-one-win-count');
 var playerTwoWinCount = document.querySelector(`#player-two-win-count`);
 var ticTacToeGrid = document.querySelector('.tic-tac-toe-grid');
-var row = document.querySelectorAll('.row');
 
 var player1 = createPlayer('🥸', 'player 1', 0);
 var player2 = createPlayer('🤖', 'player 2', 0);
-var players = [player1, player2];
 var currentPlayer = player1
 var gameBoard = ['', '', '', '', '', '', '', '', ''];
-var click = true;
 var winCombo = [
   [0, 1, 2],
   [3, 4, 5],
