@@ -91,7 +91,6 @@ function updateGame(event) {
 }
 
 function incrementWins(player) {
-  console.log(player)
   if (player === player1) {
     playerOneWinCount.innerText = `${player.wins} Wins`;
   } else if (player === player2) {
@@ -156,30 +155,3 @@ function createPlayer(token, id, wins) {
     boxesTaken: []
   }
 }
-
-// function winGame(player) {
-//   for (var i = 0; i < winCombo.length; i++) {
-//     if (winningCombos(player, winCombo[i])) {
-//       playersTurnHeading.innerText = `${currentPlayer.token} won!`
-//       player.wins++;
-//       incrementWins(player);
-//       restartGame();
-//       return player;
-//     }
-//   }
-//   if (player1.boxesTaken.length + player2.boxesTaken.length === 9) {
-//     playersTurnHeading.innerText = `It's a draw!`;
-//     restartGame();
-//     return;
-//   }
-// }
-
-// function winningCombos(player, combo) {
-//   // var matchingCount = 0;
-//   for (var j = 0; j < combo.length; i++) {
-//     if (!player.boxesTaken.includes(combo[j])) {
-//       return false;
-//     }
-//   }
-//   return true
-// }
