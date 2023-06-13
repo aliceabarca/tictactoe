@@ -19,30 +19,32 @@ var winCombo = [
   [2, 4, 6]
 ];
 
+// --- Event Listeners
 ticTacToeGrid.addEventListener('click', function(event) {
   if (validTokenSpace(event)) {
-    displayTurn(event);
-    updateGame(event);
+    displayHeadingTurn(event);
+    placeToken(event);
     checkBox(event);
   }
 });
 window.addEventListener('load', startGame);
 
+// --- Functions
 function startGame() {
-  displayTurn();
+  displayHeadingTurn();
 }
 
-function displayTurn(event) {
+function displayHeadingTurn(event) {
   if (player1.isTurn) {
     playersTurnHeading.innerText = `It's ${player1.token}'s turn.`;
-    switchTurn();
+    switchPlayerTurn();
   } else if (player2.isTurn) {
     playersTurnHeading.innerText = `It's ${player2.token}'s turn.`
-    switchTurn();
+    switchPlayerTurn();
   }
 }
 
-function switchTurn(event) {
+function switchPlayerTurn(event) {
   if(player1.isTurn === true) {
     player1.isTurn = false;
     currentPlayer = player2;
@@ -71,13 +73,13 @@ function checkBox(event) {
 
 function checkWin() {
   if (player1.isTurn) {
-    winGame(player1);
+    winOrDrawGame(player1);
   } else if (player2.isTurn) {
-    winGame(player2);
+    winOrDrawGame(player2);
    }
 }
 
-function updateGame(event) {
+function placeToken(event) {
   var box = Array.from(gridItems).indexOf(event.target);
   if (gameBoard[box] === '') {
     gameBoard[box] = currentPlayer.token;
@@ -85,7 +87,7 @@ function updateGame(event) {
   }
 }
 
-function incrementWins(player) {
+function displayPlayerWins(player) {
   if (player === player1) {
     playerOneWinCount.innerText = `${player.wins} Wins`;
   } else if (player === player2) {
@@ -93,7 +95,7 @@ function incrementWins(player) {
   }
 }
 
-function wins(player) {
+function incrementWins(player) {
   player.wins++;
 }
 
@@ -106,7 +108,7 @@ function validTokenSpace(event) {
   }
 }
 
-function winGame(player) { 
+function winOrDrawGame(player) { 
   for (var i = 0; i < winCombo.length; i++) {
     var matchingCount = 0;
     for (var j = 0; j < winCombo[i].length; j++) {
@@ -116,8 +118,8 @@ function winGame(player) {
     }
     if (matchingCount === 3) {
       playersTurnHeading.innerText = `${currentPlayer.token} won!`;
-      wins(player);
       incrementWins(player);
+      displayPlayerWins(player);
       restartGame();
       return player;
     }
@@ -130,14 +132,14 @@ function winGame(player) {
 
 function restartGame() {
   setTimeout(function() {
-    currentPlayer = switchTurn();
+    currentPlayer = switchPlayerTurn();
     gameBoard = ['', '', '', '', '', '', '', '', ''];
     player1.boxesTaken = [];
     player2.boxesTaken = [];
     for (var i = 0; i < gridItems.length; i++) {
       gridItems[i].textContent = '';
     }
-    displayTurn();
+    displayHeadingTurn();
   }, 1000);
 }
 
